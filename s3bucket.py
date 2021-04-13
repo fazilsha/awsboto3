@@ -22,6 +22,13 @@ class S3op():
                     print(f'Filename: {file}')
             except:
                 print(f"Filename: {file} doesn't exist")
+    def listBuckets(self):
+        bucket_list = self.service.list_buckets()
+        for bucket in bucket_list["Buckets"]:
+            print("------------------------------------------------------------")
+            print(f'Bucket Name: {bucket["Name"]} | Created on: {bucket["CreationDate"].strftime("%c")}')
+            print("--------Files in bucket---------")
+            for key in self.service.list_objects(Bucket=bucket["Name"])['Contents']:
+                print(key['Key'])
 B=S3op()
-B.s3bucketcreate("mybucketname")
-B.s3BucketUpload("mybucketname",["test1.txt","test2.txt"])
+B.listBuckets()
